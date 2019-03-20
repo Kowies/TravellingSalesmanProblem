@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class GraphState():
     """
     GraphState represent one of the states of the graph. Class holds
@@ -42,7 +39,7 @@ class GraphState():
 
     @staticmethod
     def initial_state(point_index, point_map):
-        return GraphState([point_index], point_map=point_map)
+        return GraphState((point_index,), point_map=point_map)
 
     def add_point(self, point_index):
         '''
@@ -56,10 +53,14 @@ class GraphState():
         GrapState
             new graph state with updated path
         '''
-        new_path = self.path + [point_index]
+        new_path = self.path + (point_index,)
         new_length = self.length + \
             self.point_map.distance(self.path[-1], point_index)
         return GraphState(new_path, new_length, self.point_map)
+
+    def get_non_visited_point_idexes(self):
+        path_set = set(self.path)
+        return [point for point in range(self.point_map.get_points_count()) if point not in path_set]
 
     def extend(self):
         '''
@@ -69,9 +70,7 @@ class GraphState():
         Array[GraphState]
             array of possible states
         '''
-        path_set = set(self.path)
-        return [self.add_point(point) for point in range(
-            self.point_map.get_points_count()) if point not in path_set]
+        return [self.add_point(point_index) for point_index in self.get_non_visited_point_idexes()]
 
     def is_final_state(self):
         '''
@@ -95,3 +94,9 @@ class GraphState():
             array of points(2-tuples) representing the path
         '''
         return [self.point_map.get_point(point_id) for point_id in self.path]
+
+    def heuristic(self):
+        '''
+        Returns heuristic value of the current state. You should override it
+        '''
+        return 0

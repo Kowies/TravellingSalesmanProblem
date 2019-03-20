@@ -11,7 +11,7 @@ class GraphStateTests(unittest.TestCase):
     def test_initial_state(self):
         initial_state = GraphState.initial_state(1, self.point_map)
 
-        self.assertEqual(initial_state.path, [1])
+        self.assertEqual(initial_state.path, (1,))
         self.assertEqual(initial_state.length, 0)
 
     def test_new_state_with_new_point(self):

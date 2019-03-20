@@ -11,8 +11,9 @@ class BruteTS():
         queue = deque([self.initial_state])
         while len(queue) > 0:
             current_state = queue.pop()
-            if current_state.is_final_state():
-                print(current_state)
+            # if current_state.is_final_state():
+            #     print(current_state)
+
             if current_state.is_final_state() and (not best_trip or current_state.length < best_trip.length):
                 best_trip = current_state
 
