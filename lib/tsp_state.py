@@ -1,4 +1,4 @@
-class GraphState():
+class TSPState():
     """
     GraphState represent one of the states of the graph. Class holds
     the state defining values like
@@ -16,7 +16,7 @@ class GraphState():
         length of a whole path up to the last point
     """
 
-    def __init__(self, path=[], length=0, point_map=None):
+    def __init__(self, path, length, tsp=None):
         '''
         Parameters
         ----------
@@ -24,24 +24,26 @@ class GraphState():
             a path that will be represented by the graph state
         length: float
             length of a new GraphState
-        point_map: Map
+        tsp: Map
             Map object representing of all the points
         '''
         self.path = path
         self.length = length
-        self.point_map = point_map
+        self.tsp = tsp
 
     def __eq__(self, other):
-        return self.path == other.path and self.length == other.length
+        if isinstance(other, self.__class__):
+            return self.path == other.path and self.length == other.length
+        return False
 
     def __str__(self):
         return str(self.path) + ', ' + str(self.length)
 
     @staticmethod
-    def initial_state(point_index, point_map):
-        return GraphState((point_index,), point_map=point_map)
+    def initial_state(point_index, tsp):
+        return TSPState((point_index,), 0, tsp)
 
-    def add_point(self, point_index):
+    def _add_point(self, point_index):
         '''
         return new GraphState with new point added to path
         Parameters
@@ -55,12 +57,12 @@ class GraphState():
         '''
         new_path = self.path + (point_index,)
         new_length = self.length + \
-            self.point_map.distance(self.path[-1], point_index)
-        return GraphState(new_path, new_length, self.point_map)
+            self.tsp.distance(self.path[-1], point_index)
+        return TSPState(new_path, new_length, self.tsp)
 
-    def get_non_visited_point_idexes(self):
+    def _get_non_visited_point_idexes(self):
         path_set = set(self.path)
-        return [point for point in range(self.point_map.get_points_count()) if point not in path_set]
+        return [point for point in range(self.tsp.get_points_count()) if point not in path_set]
 
     def extend(self):
         '''
@@ -70,7 +72,7 @@ class GraphState():
         Array[GraphState]
             array of possible states
         '''
-        return [self.add_point(point_index) for point_index in self.get_non_visited_point_idexes()]
+        return [self._add_point(point_index) for point_index in self._get_non_visited_point_idexes()]
 
     def is_final_state(self):
         '''
@@ -82,7 +84,7 @@ class GraphState():
         boolean
             true if state is final state false if not
         '''
-        return len(self.path) == self.point_map.get_points_count()
+        return len(self.path) == self.tsp.get_points_count()
 
     def reconstruct_path(self):
         '''
@@ -93,7 +95,7 @@ class GraphState():
         array[point]
             array of points(2-tuples) representing the path
         '''
-        return [self.point_map.get_point(point_id) for point_id in self.path]
+        return [self.tsp.get_point(point_id) for point_id in self.path]
 
     def heuristic(self):
         '''

@@ -1,5 +1,5 @@
 import unittest
-from lib.Map import euclidean_distance, Map
+from lib.tsp import euclidean_distance, TSP
 
 
 class DistanceTests(unittest.TestCase):
@@ -9,11 +9,11 @@ class DistanceTests(unittest.TestCase):
         self.assertEqual(euclidean_distance(p1, p2), 1)
 
 
-class MapTests(unittest.TestCase):
+class TSPTests(unittest.TestCase):
     def test_map_init(self):
         points = [(1, 1), (2, 2), (3, 3), (4, 4)]
 
-        points_map = Map(points=points)
+        points_map = TSP(points=points)
 
         self.assertEqual(points_map.get_point(0), (1, 1))
         self.assertEqual(points_map.get_point(3), (4, 4))
@@ -21,7 +21,7 @@ class MapTests(unittest.TestCase):
     def test_distance_different_points(self):
         points = [(1, 1), (1, 2), (3, 3), (4, 4)]
 
-        points_map = Map(points=points, distance_function='euclidean')
+        points_map = TSP(points=points, distance_function='euclidean')
 
         self.assertEqual(points_map.distance(0, 1), 1)
         self.assertEqual(points_map.distance(
@@ -31,7 +31,7 @@ class MapTests(unittest.TestCase):
         '''test if the distance between same points is zero'''
         points = [(1, 1), (1, 2), (3, 3), (4, 4)]
 
-        points_map = Map(points=points, distance_function='euclidean')
+        points_map = TSP(points=points, distance_function='euclidean')
 
         self.assertEqual(points_map.distance(0, 0), 0)
         self.assertEqual(points_map.distance(2, 2), 0)

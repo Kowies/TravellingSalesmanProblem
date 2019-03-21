@@ -21,8 +21,8 @@ def euclidean_distance(a, b):
     return np.sqrt(diff_x*diff_x + diff_y*diff_y)
 
 
-class Map():
-    def __init__(self, filename=None, points=None, distance_function='euclidean'):
+class TSP():
+    def __init__(self, points=None, distance_function='euclidean'):
         '''
         Builds the map from the file given in filename kwarg
         or from array of points(2-tuples). Raises exception
@@ -30,28 +30,12 @@ class Map():
         '''
         if distance_function == 'euclidean':
             self.distance_function = euclidean_distance
-        if filename:
-            self.points = self._read_points_from_file(filename)
-        elif points:
+        if points:
             self.points = points
         else:
             raise AttributeError('Data was not specified')
 
         self._build_dist_map()
-
-    def _read_points_from_file(self, filename):
-        '''
-        Reads points from the file and build map from them
-        Parameters
-        ----------
-        fielename : filename
-            filename of the file user want to read data from
-        Returns
-        -------
-        list
-            list of all points from a file 
-        '''
-        pass
 
     def _build_dist_map(self):
         '''
