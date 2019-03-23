@@ -16,7 +16,7 @@ class TSPState():
         length of a whole path up to the last point
     """
 
-    def __init__(self, path, length, tsp=None):
+    def __init__(self, path, length, tsp):
         '''
         Parameters
         ----------
