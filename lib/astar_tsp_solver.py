@@ -1,6 +1,5 @@
 from .tsp_solver import TSPSolver
-from .min_vertex_heuristic_state import MinVertexHeuristicState
-# from .priority_queue import PQueue
+from .tsp_state import TSPState
 import heapq
 
 
@@ -12,13 +11,15 @@ class AStarTSPSolver(TSPSolver):
     def __init__(self, tsp):
         self.tsp = tsp
 
-    def solve(self):
-        initial_state = MinVertexHeuristicState.initial_state(0, self.tsp)
+    def solve(self, initial_state=None):
+        if initial_state == None:
+            initial_state = TSPState.initial_state(0, self.tsp)
+
         pqueue = [initial_state]
         while len(pqueue) != 0:
             current = heapq.heappop(pqueue)
             if current.is_final_state():
-                return current.reconstruct_path()
+                return current.reconstruct_path(), current.length
 
             for state in current.extend():
                 heapq.heappush(pqueue, state)

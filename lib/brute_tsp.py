@@ -19,4 +19,4 @@ class BruteTSP(TSPSolver):
 
             queue.extend(current_state.extend())
 
-        return best_trip.reconstruct_path()
+        return best_trip.reconstruct_path(), best_trip.length

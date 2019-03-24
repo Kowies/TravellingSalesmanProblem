@@ -36,6 +36,12 @@ class TSPState():
             return self.path == other.path and self.length == other.length
         return False
 
+    def __lt__(self, other):
+        if isinstance(other, self.__class__):
+            return self.heuristic() + self.length < other.heuristic() + other.length
+
+        return False
+
     def __str__(self):
         return str(self.path) + ', ' + str(self.length)
 
@@ -58,7 +64,7 @@ class TSPState():
         new_path = self.path + (point_index,)
         new_length = self.length + \
             self.tsp.distance(self.path[-1], point_index)
-        return TSPState(new_path, new_length, self.tsp)
+        return self.__class__(new_path, new_length, self.tsp)
 
     def _get_non_visited_point_idexes(self):
         path_set = set(self.path)
