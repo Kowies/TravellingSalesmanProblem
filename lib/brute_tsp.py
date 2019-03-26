@@ -1,7 +1,7 @@
-from lib.tsp_state import TSPState
 from collections import deque
-from lib.tsp_solver import TSPSolver
 
+from lib.tsp_state import TSPState
+from lib.tsp_solver import TSPSolver
 
 class BruteTSP(TSPSolver):
     def __init__(self, tsp):

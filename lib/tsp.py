@@ -43,12 +43,12 @@ class TSP():
         allows to retrieve the distance from point to
         any other point in the map
         '''
-        self.dist_map = np.zeros([len(self.points), len(self.points)])
+        self._dist_map = np.zeros([len(self.points), len(self.points)])
 
         for i, point_1 in enumerate(self.points):
             for j, point_2 in enumerate(self.points[:i]):
                 dist = self.distance_function(point_1, point_2)
-                self.dist_map[i, j] = self.dist_map[j, i] = dist
+                self._dist_map[i, j] = self._dist_map[j, i] = dist
 
     def distance(self, point_index_1, point_index_2):
         '''
@@ -62,7 +62,7 @@ class TSP():
         float
             distance between two points
         '''
-        return self.dist_map[point_index_1, point_index_2]
+        return self._dist_map[point_index_1, point_index_2]
 
     def get_point(self, index):
         return self.points[index]

@@ -36,6 +36,12 @@ class TSPState():
             return self.path == other.path and self.length == other.length
         return False
 
+    # For A* algorithm
+    def __lt__(self, other):
+        return self.length + self.heuristic() < other.length + other.heuristic()
+    def __gt__(self, other):
+        return self.length + self.heuristic() > other.length + other.heuristic()
+
     def __str__(self):
         return str(self.path) + ', ' + str(self.length)
 
@@ -96,6 +102,8 @@ class TSPState():
             array of points(2-tuples) representing the path
         '''
         return [self.tsp.get_point(point_id) for point_id in self.path]
+
+
 
     def heuristic(self):
         '''
