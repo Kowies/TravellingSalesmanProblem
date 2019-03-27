@@ -13,7 +13,7 @@ class AStarTSPTest(unittest.TestCase):
 
         result = astar.solve()
 
-        self.assertListEqual(result, self.points)
+        self.assertListEqual(result[0], self.points)
 
     # def test_correct_solve_2(self):
     #     astar = AStarTSPSolver(self.tsp)

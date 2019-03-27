@@ -33,11 +33,11 @@ if __name__ == '__main__':
     time_astar_zero_heuristic = time_function(
         lambda: astar.solve())
     time_astar_min_vertex_heuristic = time_function(
-        lambda: astar.solve(MinVertexHeuristicState.initial_state(0, tsp)))
+        lambda: astar.solve(MinVertexHeuristicState))
     time_astar_all_min_heuristic = time_function(
-        lambda: astar.solve(AllMinHeuristicState.initial_state(0, tsp)))
+        lambda: astar.solve(AllMinHeuristicState))
     time_astar_mean_heuristic = time_function(
-        lambda: astar.solve(MeanDistanceState.initial_state(0, tsp)))
+        lambda: astar.solve(MeanDistanceState))
 
     print(f'Brute:                     {time_brute} ')
     print(f'Astar zero heuristic:      {time_astar_zero_heuristic}')
