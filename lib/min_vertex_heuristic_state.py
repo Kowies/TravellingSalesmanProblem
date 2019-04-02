@@ -1,4 +1,5 @@
 from .tsp_state import TSPState
+from .min_calculator import MinCalculator
 
 
 class MinVertexHeuristicState(TSPState):
@@ -6,27 +7,17 @@ class MinVertexHeuristicState(TSPState):
     this heuristic returns distance to the closest vertex
     times the number of unvisited vertecies
     '''
-
-    def __init__(self, path, length, tsp):
-        super().__init__(path, length, tsp)
-        self.heuristic_info = None
-
     @staticmethod
     def initial_state(initial_point_index, tsp):
-        return MinVertexHeuristicState((initial_point_index,), 0, tsp)
+        initial_state = MinVertexHeuristicState((initial_point_index,), 0, tsp)
+        initial_state.min_calculator = MinCalculator(tsp)
+        return initial_state
 
-    def _calculate_heuristic(self):
-        if self.is_final_state():
-            self.heuristic_info = 0
-            return
-
-        non_visited_vertecies = self._get_non_visited_point_idexes()
-        min_distance = min([self.tsp.distance(self.path[-1], vertex)
-                            for vertex in non_visited_vertecies])
-        self.heuristic_info = min_distance * len(non_visited_vertecies)
+    def _add_point(self, point_index):
+        new_state = super()._add_point(point_index)
+        new_state.min_calculator = self.min_calculator
+        return new_state
 
     def heuristic(self):
-        if not self.heuristic_info:
-            self._calculate_heuristic()
-
-        return self.heuristic_info
+        non_visited_len = self.tsp.get_points_count() - len(self.path)
+        return self.min_calculator[self.path[-1]] * non_visited_len

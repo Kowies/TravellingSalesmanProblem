@@ -14,17 +14,16 @@ def random_points(number_of_points):
     return [(random.randint(1, 1000), random.randint(1, 1000)) for _ in range(number_of_points)]
 
 
-def time_function(function, repeat=4):
+def time_function(function, repeat=1):
     start = time.time()
     for _ in range(repeat):
-        function()
+        a = function()
     end = time.time()
 
-    return (end - start) / repeat, function()[1]
+    return (end - start) / repeat, a[1], a[2]
 
 
-if __name__ == '__main__':
-    # points map is initiates like this and we only need one copy of it
+def main():
     tsp = TSP(random_points(int(sys.argv[1])))
     brute = BruteTSP(tsp)
     astar = AStarTSPSolver(tsp)
@@ -44,3 +43,7 @@ if __name__ == '__main__':
     print(f'Astar min from vertex:     {time_astar_min_vertex_heuristic}')
     print(f'Astar all min from vertex: {time_astar_all_min_heuristic}')
     print(f'Astar mean:                {time_astar_mean_heuristic}')
+
+
+if __name__ == '__main__':
+    main()

@@ -11,7 +11,7 @@ class MinHeuristicTest(unittest.TestCase):
 
     def test_auto_heuristic_calculation_test(self):
         '''testing initial auto calculating heuristic value'''
-        initial_state = MinVertexHeuristicState((0,), 0, self.tsp)
+        initial_state = MinVertexHeuristicState.initial_state(0, self.tsp)
 
         heuristic_value = initial_state.heuristic()
 
@@ -24,7 +24,7 @@ class MinHeuristicTest(unittest.TestCase):
         testing calculating heuristic value that is based on previous state
         no min means that heuristic is forwarded(not calculated by _calculate_heuristic)
         '''
-        initial_state = MinVertexHeuristicState((0,), 0, self.tsp)
+        initial_state = MinVertexHeuristicState.initial_state(0, self.tsp)
         next_state = initial_state._add_point(4)
 
         heuristic_value = next_state.heuristic()
@@ -38,7 +38,7 @@ class MinHeuristicTest(unittest.TestCase):
         testing calculating heuristic value that is based on previous state
         min means that heuristic is not forwarded(calculated by _calculate_heuristic)
         '''
-        initial_state = MinVertexHeuristicState((0,), 0, self.tsp)
+        initial_state = MinVertexHeuristicState.initial_state(0, self.tsp)
         next_state = initial_state._add_point(1)
 
         heuristic_value = next_state.heuristic()
