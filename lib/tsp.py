@@ -22,7 +22,7 @@ def euclidean_distance(a, b):
 
 
 class TSP():
-    def __init__(self, points=None, distance_function='euclidean'):
+    def __init__(self, graphical_tsp, distance_function='euclidean'):
         '''
         Builds the map from the file given in filename kwarg
         or from array of points(2-tuples). Raises exception
@@ -30,24 +30,31 @@ class TSP():
         '''
         if distance_function == 'euclidean':
             self.distance_function = euclidean_distance
-        if points:
-            self.points = points
         else:
-            raise AttributeError('Data was not specified')
+            raise AttributeError('Function was not specified')
+
+        self.graphical_tsp = graphical_tsp
+        self.points = [node[1] for node in self.graphical_tsp.nodes]
 
         self._build_dist_map()
 
     def _build_dist_map(self):
         '''
         builds 2d array of all given points. This array
-        allows to retrieve the distance from point to
-        any other point in the map
+        allows to retrieve the distance from node to
+        any other node in the map
         '''
-        self._dist_map = np.zeros([len(self.points), len(self.points)])
+        dimension = len(self.graphical_tsp.nodes)
+        self._dist_map = np.zeros([dimension, dimension])
 
-        for i, point_1 in enumerate(self.points):
-            for j, point_2 in enumerate(self.points[:i]):
-                dist = self.distance_function(point_1, point_2)
+        nodes = self.graphical_tsp.nodes
+
+        for i, node_1 in enumerate(nodes):
+            for j, node_2 in enumerate(nodes[:i]):
+                if self.graphical_tsp.are_neighbors(node_1, node_2):
+                    dist = self.distance_function(node_1[1], node_2[1])
+                else:
+                    dist = float("inf")
                 self._dist_map[i, j] = self._dist_map[j, i] = dist
 
     def distance(self, point_index_1, point_index_2):
@@ -69,3 +76,5 @@ class TSP():
 
     def get_points_count(self):
         return len(self.points)
+
+

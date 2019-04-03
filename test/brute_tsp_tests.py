@@ -1,31 +1,23 @@
 import unittest
 from lib.tsp import TSP
 from lib.brute_tsp import BruteTSP
+from lib.graphical_tsp import GraphicalTSP
 
 
 class BruteTSPTests(unittest.TestCase):
 
     def test_correct_solve_1(self):
-        points = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
-        tsp = TSP(points)
 
-        brute = BruteTSP(tsp)
+        points = [(1,1), (2,2), (3,3)]
+        nodes = "1 ( 1 1 )\n2 ( 2 2 )\n3 ( 3 3 )"
+        links = "Link1 ( 1 2 )\nLink1 ( 2 3 )\nLink1 ( 1 3 )"
 
-        result = brute.solve()
+        graphical_tsp = GraphicalTSP(nodes, links)
 
-        print(result)
+        problem = TSP(graphical_tsp)
 
-        self.assertListEqual(result, points)
-
-
-    def test_correct_solve_2(self):
-        points = [(1, 12), (3, 2), (1, 3), (8, 2), (-1, 5)]
-        tsp = TSP(points)
-
-        brute = BruteTSP(tsp)
+        brute = BruteTSP(problem)
 
         result = brute.solve()
 
-        print(result)
-
-        self.assertListEqual([], []) #todo
+        self.assertListEqual(result[0], points)

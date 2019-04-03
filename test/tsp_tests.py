@@ -1,5 +1,6 @@
 import unittest
 from lib.tsp import euclidean_distance, TSP
+from lib.graphical_tsp import GraphicalTSP
 
 
 class DistanceTests(unittest.TestCase):
@@ -10,31 +11,20 @@ class DistanceTests(unittest.TestCase):
 
 
 class TSPTests(unittest.TestCase):
-    def test_map_init(self):
-        points = [(1, 1), (2, 2), (3, 3), (4, 4)]
+    def test_map(self):
+        
+        nodes = "1 ( 1 1 )\n2 ( 1 2 )\n3 ( 3 3 )\n4 ( 4 4 )"
+        links = "Link1 ( 1 2 )"
+        graphical_tsp = GraphicalTSP(nodes, links)
 
-        points_map = TSP(points=points)
+        problem = TSP(graphical_tsp)
 
-        self.assertEqual(points_map.get_point(0), (1, 1))
-        self.assertEqual(points_map.get_point(3), (4, 4))
+        self.assertEqual(problem.distance(0, 1), 1)
 
-    def test_distance_different_points(self):
-        points = [(1, 1), (1, 2), (3, 3), (4, 4)]
+        self.assertEqual(problem.get_points_count(), 4)
 
-        points_map = TSP(points=points, distance_function='euclidean')
+        self.assertEqual(problem.get_point(2), (3, 3) )
 
-        self.assertEqual(points_map.distance(0, 1), 1)
-        self.assertEqual(points_map.distance(
-            1, 2), euclidean_distance(points[1], points[2]))
-
-    def test_distance_same_point(self):
-        '''test if the distance between same points is zero'''
-        points = [(1, 1), (1, 2), (3, 3), (4, 4)]
-
-        points_map = TSP(points=points, distance_function='euclidean')
-
-        self.assertEqual(points_map.distance(0, 0), 0)
-        self.assertEqual(points_map.distance(2, 2), 0)
 
 
 if __name__ == '__main__':
