@@ -44,8 +44,8 @@ class TSP():
         allows to retrieve the distance from node to
         any other node in the map
         '''
-        dimension = len(self.graphical_tsp.nodes)
-        self._dist_map = np.zeros([dimension, dimension])
+        self.dimension = len(self.graphical_tsp.nodes)
+        self._dist_map = np.zeros([self.dimension, self.dimension])
 
         nodes = self.graphical_tsp.nodes
 
@@ -56,6 +56,9 @@ class TSP():
                 else:
                     dist = float("inf")
                 self._dist_map[i, j] = self._dist_map[j, i] = dist
+
+    def dist_map(self):
+        return self._dist_map
 
     def distance(self, point_index_1, point_index_2):
         '''

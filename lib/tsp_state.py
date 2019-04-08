@@ -68,13 +68,20 @@ class TSPState():
             new graph state with updated path
         '''
         new_path = self.path + (point_index,)
-        new_length = self.length + \
-            self.tsp.distance(self.path[-1], point_index)
+
+        if len(new_path) != self.tsp.dimension:
+            new_length = self.length + \
+                self.tsp.distance(self.path[-1], point_index)
+        else:
+            new_length = self.length + \
+                self.tsp.distance(self.path[-1], point_index) + \
+                    self.tsp.distance(self.path[0], point_index)
+
         return self.__class__(new_path, new_length, self.tsp)
 
     def _get_non_visited_point_idexes(self):
         path_set = set(self.path)
-        return [point for point in range(self.tsp.get_points_count()) if point not in path_set]
+        return [point_index for point_index in range(self.tsp.get_points_count()) if (point_index not in path_set) and (self.tsp.distance(self.path[-1], point_index) != float("inf") )]
 
     def extend(self):
         '''

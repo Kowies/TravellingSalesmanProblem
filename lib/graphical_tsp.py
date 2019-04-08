@@ -8,15 +8,17 @@ class GraphicalTSP():
 
         for line in nodes.split("\n"):
             words = line.split()
-            new_node = (words[0], (float(words[2]), float(words[3])) )
-            self.nodes.append(new_node)
+            if words != []:
+                new_node = (words[0], (float(words[2]), float(words[3])) )
+                self.nodes.append(new_node)
 
         self.links = []
 
         for line in links.split("\n"):
             words = line.split()
-            new_node = (words[2], words[3])
-            self.links.append(new_node)
+            if words != []:
+                new_node = (words[2], words[3])
+                self.links.append(new_node)
 
     def are_neighbors(self, node_1, node_2):
 
