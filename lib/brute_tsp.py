@@ -3,9 +3,10 @@ from collections import deque
 from lib.tsp_state import TSPState
 from lib.tsp_solver import TSPSolver
 
+
 class BruteTSP(TSPSolver):
     def __init__(self, tsp):
-        self.initial_state = TSPState.initial_state(0, tsp=tsp)
+        self.initial_state = TSPState.initial_state(1, tsp=tsp)
 
     def solve(self):
         best_trip = None

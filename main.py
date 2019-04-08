@@ -1,3 +1,4 @@
+from lib.graphical_tsp import GraphicalTSP
 from lib.brute_tsp import BruteTSP
 from lib.astar_tsp_solver import AStarTSPSolver
 from lib.min_vertex_heuristic_state import MinVertexHeuristicState
@@ -24,7 +25,19 @@ def time_function(function, repeat=1):
 
 
 def main():
-    tsp = TSP(random_points(int(sys.argv[1])))
+    with open('germany_nodes.txt', 'r') as nodes:
+        germany_nodes = nodes.read()
+    with open('germany_links.txt', 'r') as nodes:
+        germany_links = nodes.read()
+    graph = GraphicalTSP(germany_nodes, germany_links)
+
+    # with open('poland_nodes.txt', 'r') as nodes:
+    #     poland_nodes = nodes.read()
+    # with open('poland_links.txt', 'r') as nodes:
+    #     poland_links = nodes.read()
+    # graph = GraphicalTSP(poland_nodes, poland_links)
+
+    tsp = TSP(graph)
     brute = BruteTSP(tsp)
     astar = AStarTSPSolver(tsp)
 

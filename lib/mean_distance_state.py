@@ -14,7 +14,8 @@ class MeanDistanceState(TSPState):
 
     @staticmethod
     def initial_state(initial_point_index, tsp):
-        mean = np.mean(tsp.dist_map)
+        distances = np.extract(tsp._dist_map != float("inf"), tsp._dist_map)
+        mean = np.mean(distances)
         return MeanDistanceState((initial_point_index,), 0, tsp, mean)
 
     def _add_point(self, point_index):
@@ -23,4 +24,5 @@ class MeanDistanceState(TSPState):
         return new_state
 
     def heuristic(self):
-        return len(self._get_non_visited_point_idexes()) * self.mean
+        non_visited_len = self.tsp.get_points_count() - len(self.path)
+        return non_visited_len * self.mean

@@ -39,8 +39,11 @@ class AllMinHeuristicState(TSPState):
             return
 
         non_visited_vertecies = self._get_non_visited_point_idexes()
-        min_distance = min([(self.min_calculator[vertex], vertex)
-                            for vertex in non_visited_vertecies])
+        if len(non_visited_vertecies) == 0:
+            min_distance = (float("inf"), self.path[-1])
+        else:
+            min_distance = min([(self.min_calculator[vertex], vertex)
+                                for vertex in non_visited_vertecies])
 
         self.heuristic_info = (
             min_distance[0] * len(non_visited_vertecies),  # heuristic value

@@ -84,7 +84,11 @@ class TSPState():
         Array[GraphState]
             array of possible states
         '''
-        return [self._add_point(point_index) for point_index in self._get_non_visited_point_idexes()]
+        def is_neighbor(x): return self.tsp.distance(
+            x, self.path[-1]) != float("inf")
+        neighbors = filter(is_neighbor, self._get_non_visited_point_idexes())
+        # neighbors = self._get_non_visited_point_idexes()
+        return [self._add_point(point_index) for point_index in neighbors]
 
     def is_final_state(self):
         '''
