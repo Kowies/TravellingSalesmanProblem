@@ -81,7 +81,10 @@ class TSPState():
 
     def _get_non_visited_point_idexes(self):
         path_set = set(self.path)
-        return [point_index for point_index in range(self.tsp.get_points_count()) if (point_index not in path_set) and (self.tsp.distance(self.path[-1], point_index) != float("inf") )]
+        return [point_index for point_index in range(self.tsp.get_points_count()) if point_index not in path_set]
+
+    def is_neighbor(self, index1, index2):
+        return self.tsp.distance(index1, index2) != float("inf")
 
     def extend(self):
         '''
@@ -91,7 +94,9 @@ class TSPState():
         Array[GraphState]
             array of possible states
         '''
-        return [self._add_point(point_index) for point_index in self._get_non_visited_point_idexes()]
+        return [self._add_point(point_index)
+                for point_index in self._get_non_visited_point_idexes()
+                if self.is_neighbor(self.path[-1], point_index)]
 
     def is_final_state(self):
         '''
@@ -103,7 +108,8 @@ class TSPState():
         boolean
             true if state is final state false if not
         '''
-        return len(self.path) == self.tsp.get_points_count()
+        return (len(self.path) == self.tsp.get_points_count()
+                and self.tsp.distance(self.path[-1], self.path[0]) != float("inf"))
 
     def reconstruct_path(self):
         '''

@@ -8,7 +8,7 @@ class AStarTSPSolver(TSPSolver):
         self.tsp = tsp
 
     def solve(self, state_class=TSPState):
-        initial_state = state_class.initial_state(0, self.tsp)
+        initial_state = state_class.initial_state(1, self.tsp)
         pqueue = [initial_state]
         visited_count = 0
         while len(pqueue) != 0:

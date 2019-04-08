@@ -19,5 +19,8 @@ class MinVertexHeuristicState(TSPState):
         return new_state
 
     def heuristic(self):
-        non_visited_len = self.tsp.get_points_count() - len(self.path)
-        return self.min_calculator[self.path[-1]] * non_visited_len
+        if not hasattr(self, 'heuristic_value'):
+            non_visited_len = self.tsp.get_points_count() - len(self.path)
+            self.heuristic_value = self.min_calculator[self.path[-1]
+                                                       ] * non_visited_len
+        return self.heuristic_value
