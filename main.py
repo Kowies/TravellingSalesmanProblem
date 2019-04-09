@@ -26,12 +26,11 @@ def time_function(function, repeat=1):
 
 
 def main():
-    with open("NodesPoland.txt") as f:
+    with open("data/NodesNorway.txt") as f:
         nodes = f.read()
-    # print(nodes)
-    with open("LinksPoland.txt") as f:
+
+    with open("data/LinksNorway.txt") as f:
         links = f.read()
-    # print(links)
 
     graphical_tsp = GraphicalTSP(nodes, links)
     tsp = TSP(graphical_tsp)
@@ -39,9 +38,16 @@ def main():
     brute = BruteTSP(tsp)
     astar = AStarTSPSolver(tsp)
 
+    time_brute = time_function(lambda: brute.solve())
+    print(f'Brute:                     {time_brute} ')
+
     time_astar_min_vertex_heuristic = time_function(
         lambda: astar.solve(MinVertexHeuristicState))
     print(f'Astar min from vertex:     {time_astar_min_vertex_heuristic}')
+
+    time_astar_mean_heuristic = time_function(
+        lambda: astar.solve(MeanDistanceState))
+    print(f'Astar mean:                {time_astar_mean_heuristic}')
 
     time_astar_all_min_heuristic = time_function(
         lambda: astar.solve(AllMinHeuristicState))
@@ -50,13 +56,6 @@ def main():
     time_astar_zero_heuristic = time_function(
         lambda: astar.solve())
     print(f'Astar zero heuristic:      {time_astar_zero_heuristic}')
-
-    time_brute = time_function(lambda: brute.solve())
-    print(f'Brute:                     {time_brute} ')
-
-    # time_astar_mean_heuristic = time_function(
-    #    lambda: astar.solve(MeanDistanceState))
-    #print(f'Astar mean:                {time_astar_mean_heuristic}')
 
 
 if __name__ == '__main__':

@@ -14,16 +14,22 @@ class BruteTSP(TSPSolver):
 
         visited_count = 0
         while len(queue) > 0:
-            current_state = queue.pop()
+            current = queue.pop()
             visited_count += 1
 
-            if current_state.is_final_state():
-                if best_trip == None or current_state.length < best_trip.length:
-                    best_trip = current_state
+            if current.is_final_state():
+                if best_trip == None or current.length < best_trip.length:
+                    best_trip = current
 
-            queue.extend(current_state.extend())
+            # only for analysis
+            if visited_count % 10000 == 0:
+                print(len(current.reconstruct_path()), current.length, visited_count)
+
+            queue.extend(current.extend())
 
         if best_trip:
             return best_trip.reconstruct_path(), best_trip.length, visited_count
+
+
 
         return [], float("inf"), float("inf")
