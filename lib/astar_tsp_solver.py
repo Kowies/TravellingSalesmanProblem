@@ -20,9 +20,6 @@ class AStarTSPSolver(TSPSolver):
             if current.length == float("inf"):
                 return -1, float('inf'), float('inf')
 
-            # only for analysis
-            if visited_count % 10000 == 0:
-                print(len(current.reconstruct_path()), current.length, visited_count, len(pqueue))
 
             for state in current.extend():
                 heapq.heappush(pqueue, state)

@@ -1,62 +1,73 @@
 from lib.graphical_tsp import GraphicalTSP
-from lib.brute_tsp import BruteTSP
+from lib.brute_tsp_solver import BruteTSPSolver
 from lib.astar_tsp_solver import AStarTSPSolver
 from lib.min_vertex_heuristic_state import MinVertexHeuristicState
 from lib.all_min_distance_state import AllMinHeuristicState
 from lib.mean_distance_state import MeanDistanceState
 from lib.tsp import TSP
-from lib.graphical_tsp import GraphicalTSP
 
 import random
 import time
 import sys
 
 
-def time_function(function, repeat=1):
+def clocking_function(function):
     start = time.time()
-    for _ in range(repeat):
-        a = function()
+    result = function()
     end = time.time()
-    return (end - start) / repeat, a[1], a[2], a[0]
-
-# NodesNorway.txt , LinksNorway.txt
-# NodesPoland.txt , LinksPoland.txt
-# NodesSmall.txt , LinksSmall.txt
-# NodesEU.txt , LinksEU.txt
+    
+    work_time = end - start
+    return work_time, result
 
 
 def main():
-    with open("data/NodesNorway.txt") as f:
+    with open("data/Norway/NodesNorway.txt") as f:
         nodes = f.read()
 
-    with open("data/LinksNorway.txt") as f:
+    with open("data/Norway/LinksNorway.txt") as f:
         links = f.read()
 
     graphical_tsp = GraphicalTSP(nodes, links)
     tsp = TSP(graphical_tsp)
 
-    brute = BruteTSP(tsp)
+    brute = BruteTSPSolver(tsp)
     astar = AStarTSPSolver(tsp)
+    
+    print('Warning! Calculations can take a long time.\n')
 
-    time_brute = time_function(lambda: brute.solve())
-    print(f'Brute:                     {time_brute} ')
-
-    time_astar_min_vertex_heuristic = time_function(
+    time_min_from_vertex, result_min_from_vertex = clocking_function(
         lambda: astar.solve(MinVertexHeuristicState))
-    print(f'Astar min from vertex:     {time_astar_min_vertex_heuristic}')
+    print('A* with "min from vertex" heurestic:')
+    print(f'\ttime:   {time_min_from_vertex}')
+    print(f'\tresult: {result_min_from_vertex[1]}')
+    print()
 
-    time_astar_mean_heuristic = time_function(
+    time_mean, result_mean = clocking_function(
         lambda: astar.solve(MeanDistanceState))
-    print(f'Astar mean:                {time_astar_mean_heuristic}')
+    print('Astar with "mean" heurestic:')
+    print(f'\ttime:   {time_mean}')
+    print(f'\tresult: {result_mean[1]}')
+    print()
 
-    time_astar_all_min_heuristic = time_function(
+    time_all_min_from_vertex, result_all_min_from_vertex = clocking_function(
         lambda: astar.solve(AllMinHeuristicState))
-    print(f'Astar all min from vertex: {time_astar_all_min_heuristic}')
+    print('Astar with "all min from vertex" heurestic:')
+    print(f'\ttime:   {time_all_min_from_vertex}')
+    print(f'\tresult: {result_all_min_from_vertex[1]}')
+    print()
 
-    time_astar_zero_heuristic = time_function(
+    time_zero, result_zero = clocking_function(
         lambda: astar.solve())
-    print(f'Astar zero heuristic:      {time_astar_zero_heuristic}')
+    print('Astar with "zero" heuristic:')
+    print(f'\ttime:   {time_zero}')
+    print(f'\tresult: {result_zero[1]}')
+    print()
 
+    time_brute, result_brute = clocking_function(lambda: brute.solve())
+    print('Brute:')
+    print(f'\ttime:   {time_brute}')
+    print(f'\tresult: {result_brute[1]}')
+    print()
 
 if __name__ == '__main__':
     main()
